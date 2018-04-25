@@ -200,7 +200,7 @@ var SetupService = (function () {
     function SetupService(http) {
         this.http = http;
         this.endpoint_url = 'http://198.187.28.200:3000';
-        this.helppoint_url = 'http://192.168.1.5:1337';
+        this.helppoint_url = 'http://192.168.0.117:1337';
         this.http = http;
         console.log('Hello ServicesProvider Provider');
     }
@@ -237,6 +237,11 @@ var SetupService = (function () {
     //Address details
     SetupService.prototype.createAddressDetail = function (email) {
         var response = this.http.post(this.helppoint_url + '/coin/getNewBCHAddress', email).map(function (res) { return res.json(); });
+        return response;
+    };
+    // for date details
+    SetupService.prototype.createTransactionDetail = function (email) {
+        var response = this.http.post(this.helppoint_url + '/coin/getTxsListBCH', email).map(function (res) { return res.json(); });
         return response;
     };
     // for send page
@@ -1316,6 +1321,7 @@ var WalletPage = (function () {
         this.email = user.user.email;
         this.getWallletBalance();
         this.getAddress();
+        this.getTx();
     }
     WalletPage.prototype.getWallletBalance = function () {
         var _this = this;
@@ -1327,7 +1333,16 @@ var WalletPage = (function () {
         var _this = this;
         this.setupService.createAddressDetail({ email: this.email }).subscribe(function (result) {
             _this.address = result.newaddress;
+            console.log(_this.address);
             return _this.address;
+        });
+    };
+    WalletPage.prototype.getTx = function () {
+        var _this = this;
+        this.setupService.createTransactionDetail({ userMailId: this.email }).subscribe(function (result) {
+            if (result.statusCode == 200) {
+                _this.tx = result.tx;
+            }
         });
     };
     WalletPage.prototype.doPrompt = function () {
@@ -1362,7 +1377,7 @@ var WalletPage = (function () {
     };
     WalletPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-wallet',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/'<!--\n  Generated template for the WalletPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	  <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Wallet</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n    \n<ion-content padding>\n     <ion-list>\n      <h3 align="center">My Balance</h3>\n    <div>\n      <p align="center">{{balance}}</p>\n    </div>\n\n      \n      <!-- <h3 align="center">Address</h3>\n     <div>\n      <p align="center">{{address}}</p>\n    </div> -->\n  <button class="button-backcolor" ion-button type="submit" block (click)="openSendPage(SendPage)">Send</button>\n   <button class="button-backcolor" ion-button type="submit" block (click)="doPrompt(send-amount)">Recieve</button>\n</ion-list>\n<h3 align="center">Transaction list</h3>\n \n      <ion-grid>\n  <ion-row>\n    <ion-col>\n      Date\n    </ion-col>\n    <ion-col>\n      Amount\n    </ion-col>\n    <ion-col>\n      Transaction list\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<!-- <ion-grid>\n  <ion-row>\n    <ion-col>\n      {{date}}\n    </ion-col>\n    <ion-col>\n       {{amount}}\n    </ion-col>\n    <ion-col>\n      {{txlist}}\n    </ion-col>\n  </ion-row>\n</ion-grid> -->\n    </ion-content>\n\n\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/,
+            selector: 'page-wallet',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/'<!--\n  Generated template for the WalletPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	  <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Wallet</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n    \n<ion-content padding>\n     <ion-list>\n      <h3 align="center">My Balance</h3>\n    <div>\n      <p align="center">{{balance}}</p>\n    </div>\n\n      \n      <!-- <h3 align="center">Address</h3>\n     <div>\n      <p align="center">{{address}}</p>\n    </div> -->\n  <button class="button-backcolor" ion-button type="submit" block (click)="openSendPage(SendPage)">Send</button>\n   <button class="button-backcolor" ion-button type="submit" block (click)="doPrompt(send-amount)">Recieve</button>\n</ion-list>\n<h3 align="center">Transaction list</h3>\n \n      <ion-grid>\n  <ion-row>\n    <ion-col>\n      Date\n\n    </ion-col>\n    <ion-col>\n      Amount\n    </ion-col>\n    <ion-col>\n      Transaction list\n     \n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<ion-grid>\n <ion-row *ngFor="let item of tx">\n    <ion-col>\n      {{item.time | date:\'yyyy-MM-dd HH:mm:ss Z\'}}\n    </ion-col>\n    <ion-col>\n     {{item.amount}}\n    </ion-col>\n    <ion-col>\n     {{(item.txid | slice:0:10)+".."}}\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n    </ion-content>\n\n\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
@@ -1742,7 +1757,6 @@ var AppModule = (function () {
                         { component: __WEBPACK_IMPORTED_MODULE_18__pages_setting_setting__["a" /* SettingPage */], name: 'SettingPage', segment: 'setting' },
                         { component: __WEBPACK_IMPORTED_MODULE_19__pages_help_help__["a" /* HelpPage */], name: 'HelpPage', segment: 'help' },
                         { component: __WEBPACK_IMPORTED_MODULE_20__pages_wallet_wallet__["a" /* WalletPage */], name: 'WalletPage', segment: 'wallet' },
-                        { component: __WEBPACK_IMPORTED_MODULE_20__pages_wallet_wallet__["a" /* WalletPage */], name: 'WalletPage', segment: 'sendpage' },
                     ]
                 }),
                 __WEBPACK_IMPORTED_MODULE_7__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
@@ -2131,10 +2145,16 @@ var LoginPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-user',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\login\login.html"*/'\n\n<ion-content>\n	<div  text-center style=" margin-top: 26px;">\n		<img src="assets/img/streetx-logo.png" alt="Ionic logo" class="brand-logo">\n	</div>\n	<ion-row class="logo" text-center>\n		 <ion-col col-12 style="    font-size: 2em;    margin-top: 10px;    color: #3896ea;" >\n		 	<ion-icon name="contact" class="icon-chat-user"></ion-icon></ion-col>\n		 <ion-col col-12><h3 class="text_Color"><strong >Sign In</strong></h3></ion-col>\n	</ion-row>\n	<form #loginForm="ngForm" novalidate>\n		<ion-list no-lines class="form-input-fields">\n			<ion-item>\n				<ion-input [(ngModel)]="loginDetail.email" placeholder="Enter emailid" name="email" type="text" #email="ngModel" spellcheck="false" autocapitalize="off" class="login-input"\n					required>\n				</ion-input>\n			</ion-item>\n			<p ion-text [hidden]="email.valid || submitted == false" color="danger" padding-left>\n				email is required\n			</p>\n\n			<ion-item>\n				<ion-input [(ngModel)]="loginDetail.password" placeholder="Enter password" name="password" type="password" #password="ngModel" required class="login-input" >\n				</ion-input>\n			</ion-item>\n			<p ion-text [hidden]="password.valid || submitted == false" color="danger" padding-left>\n				Password is required\n			</p>\n			<ion-row>\n				<ion-col text-right>\n			      <a style="font-size: 0.8em; color: #bdbdbd;" (click)="forgotPassword()">Forgot password?</a>\n			    </ion-col>\n			</ion-row>\n			<ion-row responsive-sm>\n				<ion-col >\n					<button class="button-backcolor" ion-button (click)="onlogin1(loginForm)" type="submit" block>Login</button>\n				</ion-col>\n			</ion-row>\n			<hr>\n			<ion-row>\n				<ion-col text-center  style="font-size: 0.8em; color: #bdbdbd;">\n					Not a member? <a class="text_Color" (click)="onSignup()">Create an account</a>\n				</ion-col>\n			</ion-row>\n		</ion-list>\n\n\n	</form>\n\n</ion-content>\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\login\login.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_6__providers_setup_services__["a" /* SetupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6__providers_setup_services__["a" /* SetupService */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _h || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_6__providers_setup_services__["a" /* SetupService */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
     ], LoginPage);
     return LoginPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=login.js.map
@@ -2489,10 +2509,16 @@ var DashboardPage = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-dashboard',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\dashboard\dashboard.html"*/'<!--\n  Generated template for the DashboardPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Dashboard</ion-title>\n     <ion-item >\n  <ion-label >\n    <ion-row class="item-md" style="border:1px;" >  \n    <ion-col col-6>\n        <b><span>BTC VOL:</span></b>\n    </ion-col>\n     <ion-col col-6>{{cexdata}}</ion-col>\n  </ion-row>\n  <ion-row>\n    <ion-col col-6>\n      <b><span>STX VOL:</span></b></ion-col>\n     <ion-col col-6>{{zebPayData}}</ion-col>\n  </ion-row>\n</ion-label>  \n</ion-item>\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n \n\n<ion-content padding>\n  <ion-icon  name="Walllet"></ion-icon>\n  <h3 align="center">My Walllet</h3>\n    \n    <div>\n      <p align="center">$374.58358000</p>\n    </div>\n  <br />\n   <form #btcForm="ngForm" novalidate>\n    <ion-grid>\n<ion-card>\n  <ion-card-content>\n    <ion-row> <h3 class="text_Color" style="margin-top: 2px"><strong>BTC</strong></h3></ion-row>\n          <ion-row no-lines class="form-input-fields">\n            <ion-col col-4>\n\n          <ion-input [(ngModel)]="btcValue.buyRate"  placeholder="buy" name="buyRate" type="text" #buyRate="ngModel" spellcheck="false" autocapitalize="off" class="login-input" >\n        </ion-input>\n            </ion-col>\n            <ion-col col-4>\n         <ion-input [(ngModel)]="btcValue.sellRate" placeholder="sell" name="sellRate" type="text" #sellRate="ngModel"  class="login-input" >\n        </ion-input>\n            </ion-col>\n            <ion-col col-4>\n            <ion-input [(ngModel)]="btcValue.volume" placeholder="volume" name="volume" type="text" #volume="ngModel"  class="login-input" >\n        </ion-input>\n            </ion-col>\n         </ion-row>\n  </ion-card-content>\n</ion-card>\n       <br><br>\n    </ion-grid>\n </form>\n     \n\n\n    <form #inrForm="ngForm" novalidate>\n          <ion-grid>\n  <ion-card>\n  <ion-card-content>\n         <ion-row> <ion-row> <h3 class="text_Color" style="margin-top: 5px"><strong>ETH</strong></h3></ion-row></ion-row>\n          <ion-row no-lines class="form-input-fields">\n            <ion-col col-4>\n          <ion-input [(ngModel)]="inrValue.buyRate"  placeholder="buy"name="buyRate" type="text" #buyRate="ngModel" spellcheck="false" autocapitalize="off" class="login-input" >\n        </ion-input>\n            </ion-col>\n            <ion-col col-4>\n         <ion-input [(ngModel)]="inrValue.sellRate" placeholder="sell" name="sellRate" type="text" #sellRate="ngModel"  class="login-input" >\n        </ion-input>\n            </ion-col>\n            <ion-col col-4>\n            <ion-input [(ngModel)]="inrValue.volume" placeholder="volume" name="volume" type="text" #volume="ngModel"  class="login-input" >\n        </ion-input>\n            </ion-col>\n         </ion-row>\n  </ion-card-content>\n</ion-card>\n\n      </ion-grid>\n    \n\n  </form>\n</ion-content>\n\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\dashboard\dashboard.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_2__providers_setup_services__["a" /* SetupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_setup_services__["a" /* SetupService */]) === "function" && _h || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* NgZone */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_3__ionic_native_geolocation__["a" /* Geolocation */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* Platform */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_2__providers_setup_services__["a" /* SetupService */]])
     ], DashboardPage);
     return DashboardPage;
-    var _a, _b, _c, _d, _e, _f, _g, _h;
 }());
 
 //# sourceMappingURL=dashboard.js.map

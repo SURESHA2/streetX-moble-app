@@ -59,7 +59,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
         { component: SettingPage, name: 'SettingPage', segment: 'setting'}, 
         { component: HelpPage, name: 'HelpPage', segment: 'help'},
         { component: WalletPage, name: 'WalletPage', segment: 'wallet'},
-        { component: WalletPage, name: 'WalletPage', segment: 'sendpage'},
+       
 
       ]
     }),

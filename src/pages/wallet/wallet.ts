@@ -29,11 +29,16 @@ export class WalletPage {
 
    responseData:any;
    public user:any;
+   public date:any;
+   public amount:any;
+   public txlist:any;
    submitted = false;
    public userName:any;
    public email:any;
    public balance:any;
    public address:any;
+   public tx:any;
+    
 
 
 constructor(public userData: UserData,
@@ -53,6 +58,7 @@ var user =JSON.parse(localStorage.getItem('logindetail'));
 this.email = user.user.email;
 this.getWallletBalance();
 this.getAddress();
+this.getTx();
 
   }
 
@@ -68,7 +74,18 @@ this.getAddress();
       this.setupService.createAddressDetail({email:this.email}).subscribe((result) => { 
         
          this.address = result.newaddress;
+         console.log(this.address);
          return this.address;
+    });
+
+    }
+
+     getTx(){
+      this.setupService.createTransactionDetail({userMailId:this.email}).subscribe((result) => { 
+        if(result.statusCode==200){
+          this.tx = result.tx;   
+              
+            }  
     });
 
     }
@@ -113,6 +130,17 @@ this.getAddress();
   }
 
  
+
+
+
+
+
+
+
+
+
+
+
  
 
 } 

@@ -38,29 +38,32 @@
   <ion-row>
     <ion-col>
       Date
+
     </ion-col>
     <ion-col>
       Amount
     </ion-col>
     <ion-col>
       Transaction list
+     
     </ion-col>
   </ion-row>
 </ion-grid>
 
-<!-- <ion-grid>
-  <ion-row>
+<ion-grid>
+ <ion-row *ngFor="let item of tx">
     <ion-col>
-      {{date}}
+      {{item.time | date:'yyyy-MM-dd HH:mm:ss Z'}}
     </ion-col>
     <ion-col>
-       {{amount}}
+     {{item.amount}}
     </ion-col>
     <ion-col>
-      {{txlist}}
+     {{(item.txid | slice:0:10)+".."}}
     </ion-col>
   </ion-row>
-</ion-grid> -->
+</ion-grid>
+
     </ion-content>
 
 

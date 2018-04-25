@@ -18,7 +18,7 @@ export class SetupService {
     
      endpoint_url : string = 'http://198.187.28.200:3000';
    
-     helppoint_url :string='http://192.168.1.5:1337';
+     helppoint_url :string='http://192.168.0.117:1337';
 
 
    //create new user account
@@ -65,7 +65,12 @@ export class SetupService {
         var response = this.http.post(this.helppoint_url+'/coin/getNewBCHAddress',email ).map(res => res.json());
         return response;
     }
-
+    // for date details
+    createTransactionDetail(email:any) {   
+         
+        var response = this.http.post(this.helppoint_url+'/coin/getTxsListBCH',email ).map(res => res.json());
+        return response;
+    }
    // for send page
     createSendDetail(senddetails:any) {   
          
