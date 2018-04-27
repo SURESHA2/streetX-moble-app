@@ -18,7 +18,7 @@ export class SetupService {
     
      endpoint_url : string = 'http://198.187.28.200:3000';
    
-     helppoint_url :string='http://192.168.0.117:1337';
+     helppoint_url :string='http://localhost:1337';
 
 
    //create new user account
@@ -75,11 +75,13 @@ export class SetupService {
     createSendDetail(senddetails:any) {   
          
         var response = this.http.post(this.helppoint_url+'/coin/sendBCH',senddetails).map(res => res.json());
+        debugger
         return response;
+
     }
    // update current passeword
     changecurrentpasswords(values:any){
-     var response =this.http.post(this.endpoint_url +'/trader/updateCurrentPassword',values).map(res =>res.json());
+     var response =this.http.post(this.helppoint_url +'/user/updateCurrentPassword',values).map(res =>res.json());
       return response;
     }
 

@@ -200,7 +200,7 @@ var SetupService = (function () {
     function SetupService(http) {
         this.http = http;
         this.endpoint_url = 'http://198.187.28.200:3000';
-        this.helppoint_url = 'http://192.168.0.117:1337';
+        this.helppoint_url = 'http://localhost:1337';
         this.http = http;
         console.log('Hello ServicesProvider Provider');
     }
@@ -247,11 +247,12 @@ var SetupService = (function () {
     // for send page
     SetupService.prototype.createSendDetail = function (senddetails) {
         var response = this.http.post(this.helppoint_url + '/coin/sendBCH', senddetails).map(function (res) { return res.json(); });
+        debugger;
         return response;
     };
     // update current passeword
     SetupService.prototype.changecurrentpasswords = function (values) {
-        var response = this.http.post(this.endpoint_url + '/trader/updateCurrentPassword', values).map(function (res) { return res.json(); });
+        var response = this.http.post(this.helppoint_url + '/user/updateCurrentPassword', values).map(function (res) { return res.json(); });
         return response;
     };
     // update current location
@@ -1147,7 +1148,7 @@ var SettingPage = (function () {
     };
     SettingPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-setting',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\setting\setting.html"*/'<!--\n  Generated template for the SettingPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	 <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div padding-top text-center >\n    <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">\n\n    <ion-list inset>   	 \n          \n          <span style="margin-right: 259px !important;" > <strong>Account verify</strong></span>\n          <br>{{userEmail.email}}\n          <span (click)="veryfyEmail(userEmail.email)" class="pull-left red-text" *ngIf="verifyEmail==false"> Not Verified</span>\n          <span class="pull-right green-text" *ngIf="verifyEmail==true"> Verified</span><hr>        \n          <button ion-item (click)="changeCurrentPassword()">Change Password</button><hr> \n \n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\setting\setting.html"*/,
+            selector: 'page-setting',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\setting\setting.html"*/'<!--\n  Generated template for the SettingPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	 <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Settings</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<div padding-top text-center >\n    <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">\n\n    <ion-list inset>   	 \n          \n          <span style="margin-right: 259px !important;" > <strong>Account verify</strong></span>\n          <br>{{userEmail.email}}\n          <span (click)="veryfyEmail(userEmail.email)" class="pull-left red-text" *ngIf="verifyEmail==false"> Not Verified</span>\n          <span class="pull-right green-text" *ngIf="verifyEmail==true"> Verified</span><hr>        \n          <button ion-item (click)="changeCurrentPassword()">Change Password</button><hr> \n          <button ion-item (click)="changeCurrentSpendingPassword()">Change Spending Password</button><hr> \n \n    </ion-list>\n  </div>\n</ion-content>\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\setting\setting.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */], __WEBPACK_IMPORTED_MODULE_3__providers_setup_services__["a" /* SetupService */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
     ], SettingPage);
@@ -1333,7 +1334,6 @@ var WalletPage = (function () {
         var _this = this;
         this.setupService.createAddressDetail({ email: this.email }).subscribe(function (result) {
             _this.address = result.newaddress;
-            console.log(_this.address);
             return _this.address;
         });
     };
@@ -1352,7 +1352,7 @@ var WalletPage = (function () {
             inputs: [
                 {
                     name: 'address',
-                    placeholder: this.address ? this.address : 'address will come later'
+                    value: this.address ? this.address : 'address will come later'
                 },
             ],
             buttons: [
@@ -1377,21 +1377,12 @@ var WalletPage = (function () {
     };
     WalletPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-wallet',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/'<!--\n  Generated template for the WalletPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	  <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Wallet</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n    \n<ion-content padding>\n     <ion-list>\n      <h3 align="center">My Balance</h3>\n    <div>\n      <p align="center">{{balance}}</p>\n    </div>\n\n      \n      <!-- <h3 align="center">Address</h3>\n     <div>\n      <p align="center">{{address}}</p>\n    </div> -->\n  <button class="button-backcolor" ion-button type="submit" block (click)="openSendPage(SendPage)">Send</button>\n   <button class="button-backcolor" ion-button type="submit" block (click)="doPrompt(send-amount)">Recieve</button>\n</ion-list>\n<h3 align="center">Transaction list</h3>\n \n      <ion-grid>\n  <ion-row>\n    <ion-col>\n      Date\n\n    </ion-col>\n    <ion-col>\n      Amount\n    </ion-col>\n    <ion-col>\n      Transaction list\n     \n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<ion-grid>\n <ion-row *ngFor="let item of tx">\n    <ion-col>\n      {{item.time | date:\'yyyy-MM-dd HH:mm:ss Z\'}}\n    </ion-col>\n    <ion-col>\n     {{item.amount}}\n    </ion-col>\n    <ion-col>\n     {{(item.txid | slice:0:10)+".."}}\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n    </ion-content>\n\n\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/,
+            selector: 'page-wallet',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/'<!--\n  Generated template for the WalletPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n  	  <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Wallet</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n    \n<ion-content padding>\n     <ion-list>\n      <h3 align="center">My Balance</h3>\n    <div>\n      <p align="center">{{balance}}</p>\n    </div>\n\n      \n      <!-- <h3 align="center">Address</h3>\n     <div>\n      <p align="center">{{address}}</p>\n    </div> -->\n  <button class="button-backcolor" ion-button type="submit" block (click)="openSendPage(SendPage)">Send</button>\n   <button class="button-backcolor" ion-button type="submit" block (click)="doPrompt(send-amount)">Recieve</button>\n</ion-list>\n<h3 align="center">Transaction list</h3>\n \n      <ion-grid>\n  <ion-row>\n    <ion-col>\n      Date\n\n    </ion-col>\n    <ion-col>\n      Amount\n    </ion-col>\n    <ion-col>\n      Transaction list\n     \n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n<ion-grid>\n <ion-row *ngFor="let item of tx">\n    <ion-col>\n      {{item.time | date : \'shortDate\'}}\n    </ion-col>\n    <ion-col>\n     {{item.amount}}\n    </ion-col>\n    <ion-col>\n     {{(item.txid | slice:0:10)+".."}}\n    </ion-col>\n  </ion-row>\n</ion-grid>\n\n    </ion-content>\n\n\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\wallet\wallet.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_3__providers_setup_services__["a" /* SetupService */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_5__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_user_data__["a" /* UserData */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["n" /* ToastController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["c" /* Events */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* MenuController */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* NavParams */]) === "function" && _g || Object, typeof (_h = typeof __WEBPACK_IMPORTED_MODULE_3__providers_setup_services__["a" /* SetupService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_setup_services__["a" /* SetupService */]) === "function" && _h || Object, typeof (_j = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _j || Object, typeof (_k = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _k || Object, typeof (_l = typeof __WEBPACK_IMPORTED_MODULE_5__ionic_native_barcode_scanner__["a" /* BarcodeScanner */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__ionic_native_barcode_scanner__["a" /* BarcodeScanner */]) === "function" && _l || Object])
     ], WalletPage);
     return WalletPage;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
 }());
 
 //# sourceMappingURL=wallet.js.map
@@ -1436,7 +1427,9 @@ var SendPage = (function () {
         this.platform = platform;
         this.submitted = false;
         this.send = { amount: '', spendingPassword: '' };
-        this.senddetails = { userMailId: 'kavipal776@gmail.com', amount: '', address: '', spendingPassword: '' };
+        this.senddetails = { userMailId: '', amount: '', address: '', spendingPassword: '' };
+        var user = JSON.parse(localStorage.getItem('logindetail'));
+        this.email = user.user.email;
         var backAction = platform.registerBackButtonAction(function () {
             _this.navCtrl.pop();
             backAction();
@@ -1444,21 +1437,22 @@ var SendPage = (function () {
     }
     SendPage.prototype.onsendBalance = function (Form) {
         var _this = this;
+        this.senddetails.userMailId = this.email;
         this.submitted = true;
         if (Form.valid) {
             this.userData.send(this.send.amount);
             this._setupService.createSendDetail(this.senddetails).subscribe(function (result) {
                 console.log(_this.senddetails);
                 if (result.statusCode == 200) {
-                    localStorage.setItem('senddetails', JSON.stringify(_this.responseData));
-                    _this.user = JSON.parse(localStorage.getItem('senddetails'));
+                    // localStorage.setItem('senddetails',JSON.stringify(this.responseData));
+                    // this.user=JSON.parse(localStorage.getItem('senddetails'));   
                 }
             });
         }
     };
     SendPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-send',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\send\send.html"*/'<ion-header>\n    <ion-navbar>\n     <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Send</ion-title>\n  </ion-navbar>\n </ion-header>\n<ion-content>\n<form #sForm="ngForm" novalidate>\n    <ion-list no-lines class="form-input-fields">\n  <br /><br /><br /><br /><br />\n      \n    <ion-item>\n      <ion-input [(ngModel)]="senddetails.amount" placeholder="Enter amount" name="amount" type="text" #amount="ngModel" spellcheck="false" autocapitalize="off" class="login-input"\n          required>\n        </ion-input>\n      </ion-item>\n\n      <p ion-text [hidden]="amount.valid || submitted == false" color="danger" padding-left>\n       Amount is required\n      </p>\n\n      <ion-item>\n\n        <ion-input [(ngModel)]="senddetails.address" placeholder="Enter address" name="address" type="text" #address="ngModel" spellcheck="false" autocapitalize="off" class="login-input"\n          required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="address.valid || submitted == false" color="danger" padding-left>\n        Address is required\n      </p>\n\n      <ion-item>\n        <ion-input [(ngModel)]="senddetails.spendingPassword" placeholder="Enter spendingPassword" name="spendingPassword" type="password" #spendingPassword="ngModel" required class="login-input" >\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="spendingPassword.valid || submitted == false" color="danger" padding-left>\n        SpendingPassword is required\n      </p>\n     \n      <ion-row responsive-sm>\n        <ion-col >\n          <button class="button-backcolor" ion-button (click)="onsendBalance(sForm)" type="submit" block>Send</button>\n          <button class="button-backcolor" ion-button (click)="onsendBalance1(sForm)" type="submit" block>Resset</button>\n        </ion-col>\n      </ion-row>\n      <hr>\n     \n    </ion-list>\n\n\n  </form>\n</ion-content>\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\send\send.html"*/,
+            selector: 'page-send',template:/*ion-inline-start:"F:\IonicApps\Trader\streetX-moble-app\src\pages\send\send.html"*/'<ion-header>\n    <ion-navbar>\n     <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Send</ion-title>\n  </ion-navbar>\n </ion-header>\n<ion-content>\n<form #sForm="ngForm" novalidate>\n    <ion-list no-lines class="form-input-fields">\n  <br /><br /><br /><br /><br />\n      \n    <ion-item>\n      <ion-input [(ngModel)]="senddetails.amount" placeholder="Enter amount" name="amount" type="text" #amount="ngModel" spellcheck="false" autocapitalize="off" class="login-input"\n          required>\n        </ion-input>\n      </ion-item>\n\n      <p ion-text [hidden]="amount.valid || submitted == false" color="danger" padding-left>\n       Amount is required\n      </p>\n\n      <ion-item>\n\n        <ion-input [(ngModel)]="senddetails.address" placeholder="Enter address" name="address" type="text" #address="ngModel" spellcheck="false" autocapitalize="off" class="login-input"\n          required>\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="address.valid || submitted == false" color="danger" padding-left>\n        Address is required\n      </p>\n\n      <ion-item>\n        <ion-input [(ngModel)]="senddetails.spendingPassword" placeholder="Enter spendingPassword" name="spendingPassword" type="password" #spendingPassword="ngModel" required class="login-input" >\n        </ion-input>\n      </ion-item>\n      <p ion-text [hidden]="spendingPassword.valid || submitted == false" color="danger" padding-left>\n        SpendingPassword is required\n      </p>\n     \n      <ion-row responsive-sm>\n        <ion-col >\n          <button class="button-backcolor" ion-button (click)="onsendBalance(sForm)" type="submit" block>Send</button>\n          <!-- <button class="button-backcolor" ion-button (click)="onsendBalance1(sForm)" type="submit" block>Resset</button> -->\n        </ion-col>\n      </ion-row>\n      <hr>\n     \n    </ion-list>\n\n\n  </form>\n</ion-content>\n'/*ion-inline-end:"F:\IonicApps\Trader\streetX-moble-app\src\pages\send\send.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__providers_user_data__["a" /* UserData */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["j" /* NavController */],
@@ -2389,7 +2383,7 @@ var DashboardPage = (function () {
         this.userEmail = { email: '' };
         this.btcValue = { email: '', buyRate: '', currencyType: '', volume: '', sellRate: '' };
         this.inrValue = { email: '', buyRate: '', currencyType: '', volume: '', sellRate: '' };
-        this.io.sails.url = "http://198.187.28.200:3000";
+        this.io.sails.url = 'http://localhost:1337';
         this.userdata();
         this.getCurrencyPrice();
         this.getCurrentPosition();

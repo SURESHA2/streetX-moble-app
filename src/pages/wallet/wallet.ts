@@ -72,9 +72,7 @@ this.getTx();
 
   getAddress(){
       this.setupService.createAddressDetail({email:this.email}).subscribe((result) => { 
-        
-         this.address = result.newaddress;
-         console.log(this.address);
+        this.address = result.newaddress;
          return this.address;
     });
 
@@ -93,14 +91,14 @@ this.getTx();
   
     doPrompt() {
     let prompt = this.alertCtrl.create({
-
+         
           title: 'Address',
           subTitle:'<img src="http://chart.apis.google.com/chart?chs=150x150&amp;cht=qr&amp;chl='+this.address+'&amp;choe=UTF-8" alt="my alt" />',
-      
+          
           inputs: [
         {
           name: 'address',
-          placeholder: this.address?this.address:'address will come later'
+          value: this.address?this.address:'address will come later'
 
         },
         

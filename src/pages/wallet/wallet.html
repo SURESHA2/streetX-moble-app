@@ -53,7 +53,7 @@
 <ion-grid>
  <ion-row *ngFor="let item of tx">
     <ion-col>
-      {{item.time | date:'yyyy-MM-dd HH:mm:ss Z'}}
+      {{item.time | date : 'shortDate'}}
     </ion-col>
     <ion-col>
      {{item.amount}}
