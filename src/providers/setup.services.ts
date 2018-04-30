@@ -16,9 +16,9 @@ export class SetupService {
     console.log('Hello ServicesProvider Provider');
   }
     
-     endpoint_url : string = 'http://198.187.28.200:3000';
+     // endpoint_url : string = 'http://198.187.28.200:3000';
    
-     helppoint_url :string='http://localhost:1337';
+     helppoint_url :string='http://192.168.0.133:1337';  
 
 
    //create new user account
@@ -30,14 +30,14 @@ export class SetupService {
 
      // verify email
      VerificationEmail(otpDetail: any) {           
-        var response = this.http.post(this.helppoint_url +'/help/otpmatch',otpDetail ).map(res => res.json());
+        var response = this.http.post(this.helppoint_url +'/user/verifyEmailAddress',otpDetail ).map(res => res.json());
         return response;
     }
     
     
     //sent Otp To Email Verificatation
-     EmailVerifyforAccount(email:any){    
-          var response =this.http.post(this.endpoint_url +'/help/otpmatch',email).map(res =>res.json());
+     EmailVerifyforAccount(userMailId:any){    
+          var response =this.http.post(this.helppoint_url +'/user/verifyOtpToEmailForgotPassord',userMailId).map(res =>res.json());
           return response;
        } 
 
@@ -75,27 +75,34 @@ export class SetupService {
     createSendDetail(senddetails:any) {   
          
         var response = this.http.post(this.helppoint_url+'/coin/sendBCH',senddetails).map(res => res.json());
-        debugger
+      
         return response;
 
     }
    // update current passeword
-    changecurrentpasswords(values:any){
-     var response =this.http.post(this.helppoint_url +'/user/updateCurrentPassword',values).map(res =>res.json());
+    changecurrentpasswords(passwordValues:any){
+     var response =this.http.post(this.helppoint_url +'/user/updateCurrentPassword', passwordValues).map(res =>res.json());
+      return response;
+    }
+    // change current spending password
+
+    
+     changecurrentspendingpasswords(passwordValues1:any){
+     var response =this.http.post(this.helppoint_url +'/user/updateCurrentPassword', passwordValues1).map(res =>res.json());
       return response;
     }
 
     // update current location
 
      sentLocation( position:any){
-           var response =this.http.post(this.endpoint_url +'/trader/updatelocation',position).map(res =>res.json());
+           var response =this.http.post(this.helppoint_url +'/trader/updatelocation',position).map(res =>res.json());
         return response;
       }
 
 
    // get buy data
      getBuydata() {
-        var response =this.http.get(this.endpoint_url +'/trader/getRates').map(res =>res.json());
+        var response =this.http.get(this.helppoint_url +'/trader/getRates').map(res =>res.json());
         return response;
        }
 
@@ -103,14 +110,14 @@ export class SetupService {
     //update price
 
       updateprice(values:any){       
-         var response = this.http.post(this.endpoint_url + '/trader/buysellupdate',values).map(res => res.json());
+         var response = this.http.post(this.helppoint_url + '/trader/buysellupdate',values).map(res => res.json());
         return response;
       }
 
       //update  Acceptance
 
         updateAcceptance(userId:any){      
-         var response = this.http.get(this.endpoint_url +'/chat/updateAcceptance',userId).map(res => res.json());
+         var response = this.http.get(this.helppoint_url +'/chat/updateAcceptance',userId).map(res => res.json());
          return response;
        }
        
@@ -119,58 +126,58 @@ export class SetupService {
       // get chat messages
 
        getChatMessages(chatId:any){
-         var response = this.http.post(this.endpoint_url +'/chat/getChatMessages',chatId).map(res => res.json());
+         var response = this.http.post(this.helppoint_url +'/chat/getChatMessages',chatId).map(res => res.json());
          return response;
        }
 
        //send message to traders
 
        sendMessage(messageDetail:any){        
-         var response = this.http.post(this.endpoint_url +'/chat/sendMessage',messageDetail).map(res => res.json());
+         var response = this.http.post(this.helppoint_url +'/chat/sendMessage',messageDetail).map(res => res.json());
          return response;
        }
        
 
        //get friends list
         getfrienlist(emailId:any){ 
-         var response = this.http.post(this.endpoint_url +'/chat/getTradersForUser',emailId).map(res => res.json());
+         var response = this.http.post(this.helppoint_url +'/chat/getTradersForUser',emailId).map(res => res.json());
          return response;
         }
 
 
         getUserChats(emailId:any){
-         var response = this.http.get(this.endpoint_url +'/chat/getUserChats',emailId).map(res => res.json());
+         var response = this.http.get(this.helppoint_url +'/chat/getUserChats',emailId).map(res => res.json());
          return response;
        }
 
         forgotPassword(userDetail: any) {
-        var response = this.http.post(this.endpoint_url + '/trader/sentOtpToEmailForgotPassword',userDetail ).map(res => res.json());
+        var response = this.http.post(this.helppoint_url + '/trader/sentOtpToEmailForgotPassword',userDetail ).map(res => res.json());
         return response;
         }
 
        forgotPasswordOTP(otp: any) {
-          var response = this.http.post(this.endpoint_url + '/trader/verifyOtpToEmailForgotPassord',otp ).map(res => res.json());
+          var response = this.http.post(this.helppoint_url + '/trader/verifyOtpToEmailForgotPassord',otp ).map(res => res.json());
           return response;
       }
 
        updateForgotPassord(newpasswordvalues: any) {
-        var response =this.http.post(this.endpoint_url +'/trader/updateForgotPassordAfterVerify',newpasswordvalues).map(res =>res.json());
+        var response =this.http.post(this.helppoint_url +'/trader/updateForgotPassordAfterVerify',newpasswordvalues).map(res =>res.json());
         return response;
       }
       
 
        acceptRequest(data: any){
-         var response =this.http.post(this.endpoint_url +'/chat/updateAcceptance',data).map(res =>res.json());
+         var response =this.http.post(this.helppoint_url +'/chat/updateAcceptance',data).map(res =>res.json());
          return response;
        }
 
        rejectRequest(data: any){
-         var response =this.http.post(this.endpoint_url +'/chat/updateAcceptance',data).map(res =>res.json());
+         var response =this.http.post(this.helppoint_url +'/chat/updateAcceptance',data).map(res =>res.json());
          return response;
        }
 
        getTraderInfo(emailId:any){ 
-          var response = this.http.post(this.endpoint_url +'/trader/getTraderInfo',emailId).map(res => res.json());
+          var response = this.http.post(this.helppoint_url +'/trader/getTraderInfo',emailId).map(res => res.json());
          return response;
        }
 

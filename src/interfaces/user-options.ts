@@ -17,7 +17,8 @@ export interface WalletOptions {
 
 export interface SendOption {
   amount: string,
-  spendingPassword: string
+  spendingPassword: string,
+
   
 }
 export interface LoginDetail {
@@ -124,7 +125,17 @@ export interface UserEmailId{
     "currentPassword": string;
     "newPassword": string;
     "confirmNewPassword": string;
+
   }
+  
+  export interface PasswordValues1{
+    "userMailId": string;
+    "currentSpendingPassword": string;
+    "newSpendingPassword": string;
+    "confirmSpendingPassword": string;
+
+  }
+
   export interface Location{
    "email":string;
    "lat":any;

@@ -14,21 +14,151 @@
   </ion-navbar>
 
 </ion-header>
-
-
-<ion-content padding>
-<div padding-top text-center >
-    <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar">
-
-    <ion-list inset>   	 
-          
-          <span style="margin-right: 259px !important;" > <strong>Account verify</strong></span>
-          <br>{{userEmail.email}}
-          <span (click)="veryfyEmail(userEmail.email)" class="pull-left red-text" *ngIf="verifyEmail==false"> Not Verified</span>
-          <span class="pull-right green-text" *ngIf="verifyEmail==true"> Verified</span><hr>        
-          <button ion-item (click)="changeCurrentPassword()">Change Password</button><hr> 
-          <button ion-item (click)="changeCurrentSpendingPassword()">Change Spending Password</button><hr> 
+<!-- /////////////////////////////////////////// -->
  
+  
+  <br><br><br><br>
+  <ion-toolbar color="secondary" >
+    <ion-segment [(ngModel)]="pet">
+      <ion-segment-button value="puppies">ChangePassword
+      </ion-segment-button>
+      <ion-segment-button value="kittens">
+        ChangeSpenPassword
+      </ion-segment-button>
+     </ion-segment>
+  </ion-toolbar>
+  
+
+
+  <ion-content padding>
+       <form #pForm="ngForm" novalidate>
+        <ion-list no-lines class="form-input-fields">
+
+  <div [ngSwitch]="pet">
+    <ion-list *ngSwitchCase="'puppies'">
+
+<br><br><br><br>
+      <ion-item>
+       <ion-input [(ngModel)]="passwordValues.currentPassword" placeholder="Enter currentPassword" name="currentPassword" type="password" #currentPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+       <p ion-text [hidden]="currentPassword.valid || submitted == false" color="danger" padding-left>
+       currentPassword is required
+      </p>
+
+      <ion-item>
+      <ion-input [(ngModel)]="passwordValues.newPassword" placeholder="Enter newPassword" name="newPassword" type="password" #newPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="newPassword.valid || submitted == false" color="danger" padding-left>
+        newPassword is required
+      </p>
+
+      <ion-item>
+      <ion-input [(ngModel)]="passwordValues.confirmNewPassword" placeholder="Enter confirmNewPassword" name="confirmNewPassword" type="password" #confirmNewPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="confirmNewPassword.valid || submitted == false" color="danger" padding-left>
+       confirmNewPassword is required
+      </p>
+
+      <ion-row responsive-sm>
+        <ion-col >
+          <button class="button-backcolor" ion-button (click)="changeCurrentPassword(pForm)" type="submit" block>Submit</button>
+        
+        </ion-col>
+      </ion-row>
     </ion-list>
-  </div>
+
+</div></ion-list></form></ion-content>
+     <ion-content padding>
+       <form #psForm="ngForm" novalidate>
+        <ion-list no-lines class="form-input-fields">
+        <div [ngSwitch]="pet"> 
+       <ion-list *ngSwitchCase="'kittens'">
+
+     <br><br><br><br>
+      <ion-item>
+      <ion-input [(ngModel)]="passwordValues1.currentSpendingPassword" placeholder="Enter currentSpendingPassword" name="currentSpendingPassword" type="password" #currentSpendingPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+       <p ion-text [hidden]="currentSpendingPassword.valid || submitted == false" color="danger" padding-left>
+       currentSpendingPassword is required
+      </p>
+
+     <ion-item>
+      <ion-input [(ngModel)]="passwordValues1.newSpendingPassword" placeholder="Enter newSpendingPassword" name="newSpendingPassword" type="password" #newSpendingPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="newSpendingPassword.valid || submitted == false" color="danger" padding-left>
+        newSpendingPassword is required
+      </p>
+
+     <ion-item>
+      <ion-input [(ngModel)]="passwordValues1.confirmSpendingPassword" placeholder="Enter confirmSpendingPassword" name="confirmSpendingPassword" type="password" #confirmSpendingPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="confirmSpendingPassword.valid || submitted == false" color="danger" padding-left>
+       confirmSpendingPassword is required
+      </p>
+
+      <button class="button-backcolor" ion-button (click)="changespendingPassword(psForm)" type="submit" block>Submit</button>
+</ion-list>
+</div>
+</ion-list>
+</form>
 </ion-content>
+
+ 
+<!-- ///////////////////////////////////////// -->
+
+<!-- 
+<ion-content padding>
+ <form #settingForm="ngForm" novalidate>
+    <ion-list no-lines class="form-input-fields">
+    <ion-item>
+      <ion-input [(ngModel)]="passwordValues.currentPassword" placeholder="Enter currentPassword" name="currentPassword" type="password" #currentPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+
+      <p ion-text [hidden]="currentPassword.valid || submitted == false" color="danger" padding-left>
+       currentPassword is required
+      </p>
+
+      <ion-item>
+      <ion-input [(ngModel)]="passwordValues.newPassword" placeholder="Enter newPassword" name="newPassword" type="password" #newPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="newPassword.valid || submitted == false" color="danger" padding-left>
+        newPassword is required
+      </p>
+      <ion-item>
+
+        <ion-input [(ngModel)]="passwordValues.confirmNewPassword" placeholder="Enter confirmNewPassword" name="confirmNewPassword" type="password" #confirmNewPassword="ngModel" spellcheck="false" autocapitalize="off" class="login-input"
+          required>
+        </ion-input>
+      </ion-item>
+      <p ion-text [hidden]="confirmNewPassword.valid || submitted == false" color="danger" padding-left>
+       confirmNewPassword is required
+      </p>
+     
+      <ion-row responsive-sm>
+        <ion-col >
+          <button class="button-backcolor" ion-button (click)="changeCurrentPassword(settingForm)" type="submit" block>changepassword</button>
+          <button class="button-backcolor" ion-button (click)="changespendingPassword(settingForm)" type="submit" block>changespendingpassword</button>
+        </ion-col>
+      </ion-row>
+      <hr>
+     
+    </ion-list>
+   </form>
+</ion-content>
+ -->
